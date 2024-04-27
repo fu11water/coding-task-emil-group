@@ -35,14 +35,22 @@ export class RequestsService {
       user,
       insContract: contract,
     });
-    return this.insRequestRepository.save(request);
+
+    const { id, amount, reason, details, client } = request;
+    await this.insRequestRepository.save(request);
+    return { id, amount, reason, details, client };
   }
 
   async getRequests() {
-    return this.insRequestRepository.find();
+    return this.insRequestRepository.find({
+      select: ['id', 'amount', 'reason', 'details', 'client'],
+    });
   }
 
-  async deleteRequest(id: string) {
+  async deleteRequest(id: number) {
+    if (!id) {
+      return;
+    }
     return this.insRequestRepository.delete(id);
   }
 }

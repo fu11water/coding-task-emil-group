@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { RequestsModule } from './requests/requests.module';
 import { ContractsModule } from './contracts/contracts.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,7 +19,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     RequestsModule,
     ContractsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

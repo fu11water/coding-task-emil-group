@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package insuranceproto;
+
+service InsuranceService {
+    rpc AddContract(addContractRequest) returns (Contract) {};
+    rpc GeAllContracts(getAllContractsRequest) returns (getAllContractsResponse) {};
+    rpc DeleteContract(deleteContractRequest) returns (deleteContractResponse) {};
+    rpc AddRequest(addRequestRequest) returns (Request) {};
+    rpc GeAllRequests(getAllRequestsRequest) returns (getAllRequestsResponse) {};
+    rpc DeleteRequest(deleteRequestRequest) returns (deleteRequestResponse) {};
+}
+
+message getAllContractsRequest {
+}
+message deleteContractResponse {
+}
+
+message getAllRequestsRequest {
+}
+message deleteRequestResponse {
+}
+
+message addContractRequest {
+    string form = 1;
+    string details = 2;
+    string client = 3;
+}
+
+message Contract {
+    int32 id = 1;
+    string form = 2;
+    string details = 3;
+    string client = 4;
+}
+
+message getAllContractsResponse {
+    repeated Contract contracts = 1;
+}
+
+message deleteContractRequest {
+    int32 id = 1;
+}
+
+message addRequestRequest {
+    int32 amount = 1;
+    string reason = 2;
+    string details = 3;
+    string client = 4;
+    int32 insContractId = 5;
+    int32 userId = 6;
+}
+
+message Request {
+    int32 id = 1;
+    int32 amount = 2;
+    string reason = 3;
+    string details = 4;
+    string client = 5;
+}
+
+message getAllRequestsResponse {
+    repeated Request requests = 1;
+}
+
+message deleteRequestRequest {
+    int32 id = 1;
+}

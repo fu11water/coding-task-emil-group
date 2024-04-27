@@ -1,23 +1,34 @@
-import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
 import { AddContractDto } from './contracts.dto';
+import { GrpcMethod } from '@nestjs/microservices';
+import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
 
 @Controller('contracts')
 export class ContractsController {
   constructor(private readonly contractsService: ContractsService) {}
 
-  @Post()
-  addRequest(@Body() addContractDto: AddContractDto) {
+  @GrpcMethod('InsuranceService')
+  async addContract(
+    addContractDto: AddContractDto,
+    metadata: Metadata,
+    call: ServerUnaryCall<any, any>,
+  ) {
     return this.contractsService.addContract(addContractDto);
   }
 
-  @Get()
-  geAllRequests() {
-    return this.contractsService.getContracts();
+  @GrpcMethod('InsuranceService')
+  async geAllContracts() {
+    const contracts = await this.contractsService.getContracts();
+    return { contracts };
   }
 
-  @Delete(':id')
-  deleteRequest(@Param('id') id: string) {
+  @GrpcMethod('InsuranceService')
+  async deleteContract(
+    { id }: { id: number },
+    metadata: Metadata,
+    call: ServerUnaryCall<any, any>,
+  ) {
     return this.contractsService.deleteContract(id);
   }
 }

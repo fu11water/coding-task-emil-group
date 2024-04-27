@@ -1,5 +1,5 @@
-import { Module, Scope } from '@nestjs/common';
-import { GatewayController } from './gateway.controller';
+import { Module } from '@nestjs/common';
+import { IamController } from './iam.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
@@ -17,6 +17,6 @@ import { join } from 'path';
       },
     ]),
   ],
-  controllers: [GatewayController],
+  controllers: [IamController],
 })
-export class GatewayModule {}
+export class IamModule {}

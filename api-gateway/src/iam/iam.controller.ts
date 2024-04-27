@@ -29,7 +29,7 @@ interface UserService {
 }
 
 @Controller('users')
-export class GatewayController implements OnModuleInit {
+export class IamController implements OnModuleInit {
   private userService: UserService;
 
   constructor(@Inject('USERPROTO_PACKAGE') private client: ClientGrpc) {}

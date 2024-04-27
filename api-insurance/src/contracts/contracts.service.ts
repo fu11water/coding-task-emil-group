@@ -14,14 +14,21 @@ export class ContractsService {
 
   async addContract(addContractData: AddContractDto) {
     const contract = this.insContractRepository.create(addContractData);
-    return this.insContractRepository.save(contract);
+    const { id, form, details, client } = contract;
+    await this.insContractRepository.save(contract);
+    return { id, form, details, client };
   }
 
   async getContracts() {
-    return this.insContractRepository.find();
+    return this.insContractRepository.find({
+      select: ['id', 'form', 'details', 'client'],
+    });
   }
 
-  async deleteContract(id: string) {
+  async deleteContract(id: number) {
+    if (!id) {
+      return;
+    }
     return this.insContractRepository.delete(id);
   }
 }
