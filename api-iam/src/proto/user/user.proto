@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package userproto;
+
+service UserService {
+    rpc AddUser(addUserRequest) returns (User) {};
+    rpc GetAllUsers(getAllUsersRequest) returns (getAllUsersResponse) {};
+    rpc DeleteUser(deleteUserRequest) returns (deleteUserResponse) {};
+    rpc Login(loginRequest) returns (loginResponse) {};
+}
+
+message getAllUsersRequest {
+}
+message deleteUserResponse {
+}
+
+message addUserRequest {
+    string name = 1;
+    string login = 2;
+    string password = 3;
+    string role = 4;
+    optional bool isActive = 5;
+}
+
+message addUserResponse {
+    User user = 1;
+}
+
+message User {
+    int32 id = 1;
+    string name = 2;
+    string login = 3;
+    bool isActive = 4;
+}
+
+message getAllUsersResponse {
+    repeated User users = 1;
+}
+
+message deleteUserRequest {
+    int32 id = 1;
+}
+
+message loginRequest {
+    string login = 1;
+    string password = 2;
+}
+
+message loginResponse {
+    string accessToken = 1;
+}

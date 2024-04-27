@@ -1,23 +1,34 @@
 import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
+import { GrpcMethod } from '@nestjs/microservices';
 import { UsersService } from './users.service';
 import { AddUserDto } from './users.dto';
+import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  addUser(@Body() addUserDto: AddUserDto) {
-    return this.usersService.addUser(addUserDto);
+  @GrpcMethod('UserService')
+  async addUser(
+    addUserData: AddUserDto,
+    metadata: Metadata,
+    call: ServerUnaryCall<any, any>,
+  ) {
+    return this.usersService.addUser(addUserData);
   }
 
-  @Get()
-  geAllUsers() {
-    return this.usersService.getUsers();
+  @GrpcMethod('UserService')
+  async getAllUsers() {
+    const users = await this.usersService.getUsers();
+    return { users };
   }
 
-  @Delete(':id')
-  deleteUser(@Param('id') id: string) {
+  @GrpcMethod('UserService')
+  async deleteUser(
+    { id }: { id: number },
+    metadata: Metadata,
+    call: ServerUnaryCall<any, any>,
+  ) {
     return this.usersService.deleteUser(id);
   }
 }

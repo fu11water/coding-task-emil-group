@@ -1,5 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RpcException } from '@nestjs/microservices';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
@@ -8,6 +9,7 @@ import { config as dotenvConfig } from 'dotenv';
 import { User } from '../entities/users.entity';
 import { Role } from '../entities/roles.entity';
 import { LoginDto } from './auth.dto';
+import * as grpc from '@grpc/grpc-js';
 
 dotenvConfig({ path: '.env' });
 
@@ -28,12 +30,14 @@ export class AuthService {
       .getOne();
 
     if (!user) {
-      throw new UnauthorizedException('User with such login not exist');
+      throw new RpcException(
+        new UnauthorizedException('User with such login not exist'),
+      );
     }
 
     const isMatch = await bcrypt.compare(loginData.password, user.password);
     if (!isMatch) {
-      throw new UnauthorizedException('Wrong password');
+      throw new RpcException('Wrong password');
     }
 
     const token = jwt.sign(
@@ -45,6 +49,6 @@ export class AuthService {
       },
     );
 
-    return { 'access-token': token };
+    return { accessToken: token };
   }
 }

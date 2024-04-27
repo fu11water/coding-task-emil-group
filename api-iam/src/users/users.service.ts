@@ -33,14 +33,26 @@ export class UsersService {
       login: addUserData.login,
       role: userRole,
     });
-    return this.usersRepository.save(user);
+    await this.usersRepository.save(user);
+    return {
+      id: user.id,
+      name: user.name,
+      login: user.login,
+      isActive: user.isActive,
+    };
   }
 
   async getUsers() {
-    return this.usersRepository.find();
+    const users = await this.usersRepository.find({
+      select: ['id', 'name', 'login', 'isActive'],
+    });
+    return users;
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: number) {
+    if (!id) {
+      return;
+    }
     return this.usersRepository.delete(id);
   }
 }
