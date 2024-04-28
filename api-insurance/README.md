@@ -38,12 +38,15 @@ SERVICE_ERROR_ID
 
 To start the application:
 
-bash
+```bash
 npm run start:dev # Development mode with hot reload
+```
+
 For production mode:
 
-bash
+```bash
 npm run start:prod
+```
 
 ## Scripts
 
