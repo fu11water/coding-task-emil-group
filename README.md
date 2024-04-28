@@ -4,6 +4,7 @@ This project provide a test project for test coding task
 
 ## Technologies
 
+- Node.js v.20.10.0 as JavaScript runtime
 - Nest.js as backend node.js framework
 - TypeORM as ORM
 - Postgres as database
@@ -31,6 +32,15 @@ This project provide a test project for test coding task
 - every enpoint protects with auth and access guards. So first of all you have to use `login` endpoint and get `accessToken` for one of user. After that you can use accessToken to Authorize in swagger via specific button in the right top corner.
 - you can use any of mocked users (logins: `super-admin`, `admin`, `manager`, `blocked`). Every of default mocked user has password: `pass123`.
 - to kill all process that was made for project you can see the pid (process ids) of nest js services in console logs and kill them in activity monitor or with terminal via "kill" command.
+
+## Default users
+
+| Login       | Description                                                               |
+| ----------- | ------------------------------------------------------------------------- |
+| super-admin | Has full permissions for system                                           |
+| admin       | Has permissions to operate with user, role, permission entities           |
+| manager     | Has permissions to operate with insurance contract and insurance requests |
+| blocked     | User that can only make non-guarded requests                              |
 
 ## Services
 
