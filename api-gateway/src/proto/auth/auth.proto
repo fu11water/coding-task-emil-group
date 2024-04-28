@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package authproto;
+
+service AuthService {
+    rpc IsAuthenticated(authenticationRequest) returns (authenticationResponse) {};
+    rpc IsAuthorized(authorizationRequest) returns (authorizationResponse) {};
+}
+
+message authenticationRequest {
+    string accessToken = 1;
+}
+
+message authorizationRequest {
+    string accessToken = 1;
+    string permission = 2;
+}
+
+message authenticationResponse {
+    bool isAuthenticated = 1;
+}
+
+message authorizationResponse {
+    bool isAuthorized = 1;
+}

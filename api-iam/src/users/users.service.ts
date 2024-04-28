@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { RpcException } from '@nestjs/microservices';
 
 import { User } from '../entities/users.entity';
 import { Role } from '../entities/roles.entity';
 import { AddUserDto } from './users.dto';
+import { EErrors, getServiceErrorCode } from '../errors';
 
 @Injectable()
 export class UsersService {
@@ -17,9 +19,21 @@ export class UsersService {
   ) {}
 
   async addUser(addUserData: AddUserDto) {
+    const existingUser = await this.usersRepository.findOneBy({
+      login: addUserData.login,
+    });
+
+    if (existingUser) {
+      throw new RpcException(getServiceErrorCode(EErrors.LOGIN_ALREADY_USED));
+    }
+
     const userRole = await this.rolesRepository.findOneBy({
       name: addUserData.role,
     });
+
+    if (!userRole) {
+      throw new RpcException(getServiceErrorCode(EErrors.ROLE_NOT_EXIST));
+    }
 
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(

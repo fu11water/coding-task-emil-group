@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { IamController } from './iam.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { join } from 'path';
         },
       },
     ]),
+    AuthModule,
   ],
   controllers: [IamController],
 })
