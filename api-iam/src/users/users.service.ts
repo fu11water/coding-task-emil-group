@@ -41,7 +41,7 @@ export class UsersService {
       saltOrRounds,
     );
 
-    const user = this.usersRepository.create({
+    const user = await this.usersRepository.create({
       name: addUserData.name,
       password: hashedPassword,
       login: addUserData.login,
